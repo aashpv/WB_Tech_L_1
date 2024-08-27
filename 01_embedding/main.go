@@ -14,24 +14,29 @@ type Human struct {
 }
 
 func (h *Human) saySomething() {
+	// Метод выводит строку с информацией о человеке
 	fmt.Printf("Hi, I'm %s, I'm %d years old!\n", h.Name, h.Age)
 }
 
 type Action struct {
-	Human
+	Human // Встраивание структуры Human
 }
 
 func (a *Action) walk() {
-	fmt.Printf("%s, is comming.\n", a.Name)
+	// Метод выводит строку с информацией о действии
+	fmt.Printf("%s, is walking.\n", a.Name)
 }
 
 func main() {
+	// Создание экземпляра структуры Action
 	a := Action{
 		Human{
 			Name: "Bob",
 			Age:  25,
 		},
 	}
+
+	// Так как Action встраивает Human, метод saySomething() доступен и для Action
 	a.saySomething()
 	a.walk()
 }
