@@ -9,43 +9,57 @@ import "fmt"
 var justString string
 
 func someFunc() {
-  v := createHugeString(1 << 10)
-  justString = v[:100]
+  v := createHugeString(1 << 10) // Создание строки размера 1024 байта
+  justString = v[:100]            // Срез строки, сохраняющий первые 100 байт в глобальную переменную
 }
 
 func main() {
   someFunc()
 }
+
+В коде выше срез строки v[:100] не создает новую строку, а ссылается на исходную строку v.
+Это означает, что даже если justString хранит только 100 байт данных,
+в памяти по-прежнему сохраняется вся исходная строка размером 1024 байта.
+
+Если строка содержит символы, которые кодируются несколькими байтами,
+срез по байтам может нарушить их целостность.
 */
 
 var justString string
 
 func someFunc() {
-	v := createHugeString(1 << 10)
+	v := createHugeString(1 << 10) // Создаем строку размером 1024 байта
 
+	// Используем функцию subStr для корректного создания подстроки, чтобы избежать потенциальных проблем с памятью
 	justString = subStr(v, 100)
 	fmt.Println(justString)
 }
 
-func subStr(s string, length int) string {
-	if len(s) <= length {
+// Функция subStr преобразует строку в срез рун и возвращает подстроку длиной n рун
+func subStr(s string, n int) string {
+	// Если длина строки меньше или равна n, возвращаем всю строку
+	if len(s) <= n {
 		return s
 	}
 
+	// Преобразуем строку в срез рун, чтобы корректно обрабатывать многобайтовые символы
 	runes := []rune(s)
-	if len(runes) < length {
+	if len(runes) < n {
 		return s
 	}
 
-	return string(runes[:length])
+	// Возвращаем строку, состоящую из первых n рун
+	return string(runes[:n])
 }
 
+// Функция createHugeString создает строку заданного размера из символов 'A'
 func createHugeString(size int) string {
-	bytes := make([]byte, size)
+	bytes := make([]byte, size) // Создаем массив байтов размером size
+	// Заполняем массив байтов символом 'A'
 	for i := range bytes {
 		bytes[i] = 'A'
 	}
-	return string(bytes)
+	return string(bytes) // Преобразуем массив байтов в строку и возвращаем ее
 }
 
 func main() {

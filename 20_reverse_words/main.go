@@ -11,12 +11,18 @@ import (
 */
 
 func reverseWords(s string) string {
-	//words := strings.Split(s, " ")
+	// Используем strings.Fields для разделения строки на срез слов.
+	// В отличие от strings.Split, strings.Fields автоматически обрабатывает несколько пробелов как один разделитель.
 	words := strings.Fields(s)
 
+	// Алгоритм разворота слов в срезе аналогичен развороту символов в строке:
+	// используем два указателя i (слева) и j (справа) и меняем местами элементы.
 	for i, j := 0, len(words)-1; i < j; i, j = i+1, j-1 {
+		// Меняем местами слова.
 		words[i], words[j] = words[j], words[i]
 	}
+
+	// Соединяем слова обратно в строку с помощью strings.Join, используя пробел в качестве разделителя.
 	return strings.Join(words, " ")
 }
 

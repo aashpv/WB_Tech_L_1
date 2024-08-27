@@ -16,16 +16,23 @@ aabcd — false
 */
 
 func isUnique(str string) bool {
+	// Приводим строку к нижнему регистру для регистронезависимой проверки
 	str = strings.ToLower(str)
 
+	// Создаём карту для отслеживания символов
 	chars := make(map[rune]bool)
 
+	// Проходим по каждому символу строки
 	for _, char := range str {
+		// Если символ уже встречался, возвращаем false
 		if chars[char] {
 			return false
 		}
+		// Вставляем символ в карту
 		chars[char] = true
 	}
+
+	// Если все символы уникальны, возвращаем true
 	return true
 }
 

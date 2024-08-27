@@ -24,6 +24,7 @@ func swapXOR(a, b int) {
 
 func main() {
 	a, b := 5, 10
+	//b, a = a, b // Go поддерживает синтаксис, с помощью которого мы можем поменять местами две переменные в одной строке
 	fmt.Println(a, b)
 	fmt.Println("-------------------")
 	swapArithmetic(a, b)

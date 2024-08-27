@@ -7,30 +7,36 @@ import "fmt"
 во второй — результат операции x*2, после чего данные из второго канала должны выводиться в stdout.
 */
 
+// Функция writer записывает числа из массива nums в канал ch1
 func writer(nums []int, ch1 chan<- int) {
 	for _, num := range nums {
-		ch1 <- num
+		ch1 <- num // отправляем каждое число в канал ch1
 	}
-	close(ch1)
+	close(ch1) // закрываем канал после отправки всех чисел
 }
 
+// Функция multiplier считывает числа из канала ch1, умножает их на 2 и отправляет результат в канал ch2
 func multiplier(ch1 <-chan int, ch2 chan<- int) {
-	for num := range ch1 {
-		ch2 <- num * 2
+	for num := range ch1 { // получаем числа из канала ch1
+		ch2 <- num * 2 // умножаем на 2 и отправляем результат в канал ch2
 	}
-	close(ch2)
+	close(ch2) // закрываем канал ch2 после обработки всех чисел
 }
 
 func main() {
+	// Массив чисел, который будем обрабатывать
 	nums := []int{2, 4, 6, 8, 10}
 
+	// Создаем два канала: ch1 для исходных чисел, ch2 для результатов умножения
 	ch1 := make(chan int)
 	ch2 := make(chan int)
 
-	go writer(nums, ch1)
-	go multiplier(ch1, ch2)
+	// Запускаем горутины writer и multiplier
+	go writer(nums, ch1)    // Запускаем writer, чтобы записывать числа в ch1
+	go multiplier(ch1, ch2) // Запускаем multiplier, чтобы обрабатывать числа из ch1 и отправлять результаты в ch2
 
+	// Считываем и выводим результаты из канала ch2
 	for num := range ch2 {
-		fmt.Println(num)
+		fmt.Println(num) // выводим результат умножения в stdout
 	}
 }
